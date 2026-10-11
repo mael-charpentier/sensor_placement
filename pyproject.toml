@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools==79.0.1", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spgprcpd"
+version = "0.1.0"
+description = "Sensor placement for Gaussian process regression and change-point detection"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10,<3.11"
+authors = [{ name = "Mael Charpentier", email = "mael.charpentier at umontreal.ca" }]
+keywords = [
+    "sensor placement",
+    "gaussian process",
+    "change point detection",
+    "air quality",
+    "spatial statistics",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+
+# Versions are pinned exactly. gpflow and tensorflow in particular are sensitive to minor
+# upgrades.
+dependencies = [
+    "numpy==1.26.4",
+    "scipy==1.15.3",
+    "pandas==2.3.3",
+    "tensorflow==2.20.0",
+    "tensorflow-probability==0.25.0",
+    "gpflow==2.10.0",
+]
+
+[project.optional-dependencies]
+# The kl placement criterion can solve its mixed-integer program with gurobi when that is
+# installed, and falls back to the greedy and exhaustive optimisers otherwise. Gurobi needs
+# a licence, free for academics.
+milp = ["gurobipy==13.0.1"]
+
+# The EcoSense loader prefers the curated csv chunks. It can also read the .rds export when
+# pyreadr is installed, and it skips that source with a notice when it is not.
+rds = ["pyreadr==0.5.6"]
+
+[project.urls]
+Repository = "https://github.com/mael-charpentier/sensor_placement"
+Thesis = "TODO: link to the thesis"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = [
+    "E501",
+    "E741",
+    "E701",
+    "E702",
+    "B008",
+    "B905",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"src/spgprcpd/experiments/synthetic.py" = ["B023", "E731"]
+"src/spgprcpd/experiments/real.py" = ["E731"]
+"src/spgprcpd/data/kernels.py" = ["E731"]
+"src/spgprcpd/inference/pep.py" = ["F841", "N806"]
+"src/spgprcpd/detection/segcpgp.py" = ["F841"]

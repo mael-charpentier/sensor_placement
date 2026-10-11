@@ -1,0 +1,13 @@
+# Prefer `pip install -e .` (which reads pyproject.toml) over this file, it also puts
+# src/spgprcpd on the import path.
+#
+# Optional extras, not listed here:
+#   pip install -e ".[milp]"   gurobipy, the mixed-integer solver for the kl criterion
+#   pip install -e ".[rds]"    pyreadr, to read the ecosense .rds export
+
+numpy==1.26.4
+scipy==1.15.3
+pandas==2.3.3
+tensorflow==2.20.0
+tensorflow-probability==0.25.0
+gpflow==2.10.0
